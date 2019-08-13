@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html ng-app = "TableApp" ng-controller = "TableController">
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    input[type=text], select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    
+      
+    input[type=number] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    input[type=email], select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    label {
+      padding: 12px 12px 12px 0;
+      display: inline-block;
+    }
+    
+    input[type=submit] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      float: right;
+    }
+    
+    table, tr , td {
+
+border: 1px solid grey; 
+/* this is used for border */
+
+border-collapse: collapse;
+
+padding: 5px;
+
+}
+
+    input[type=submit]:hover {
+      background-color: #45a049;
+    }
+    
+    .container {
+      border-radius: 10px;
+      outline: #4CAF50 solid 5px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    
+    .col-25 {
+      float: left;
+      width: 25%;
+      margin-top: 6px;
+    }
+    
+    .col-75 {
+      float: left;
+      width: 65%;
+      margin-top: 6px;
+    }
+    
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+/* 
+    table tr:nth-child(odd) {
+
+background-color: pink;
+
+}
+
+table tr:nth-child(even) {
+
+background-color: white;
+
+} */
+
+    
+    /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+    /* @media screen and (max-width: 600px) {
+      .col-25, .col-75, input[type=submit] {
+        width: 100%;
+        margin-top: 0;
+      }
+    } */
+    </style>
+    <script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"> </script>
+    <script src="/src/controller/controller.js"></script>
+</head>
+<body>
+
+
+   
+
+  <div class="container">
+    <form name = "myForm" ng-submit="add(myName, myEmail,myphone)">
+      <div class="row">
+        <div class="col-25">
+          <label for="fname">Name</label>
+        </div>
+        <div class="col-75">
+          <input type="text" id="fname" name="firstname" ng-model="myName" placeholder="Your name.." ng-pattern ="/^[a-zA-Z\s]*$/"  >
+          <span style="color:red" ng-show="myForm.firstname.$dirty && myForm.firstname.$invalid">The name is required.</span>
+          
+          <span ng-show="myName.length>12"  style="color:red" >Maximum 12 charecters allowed</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="lname">Email</label>
+        </div>
+        <div class="col-75">
+          
+          <input  name="email" type="email" ng-model="myEmail" placeholder="Your email .." ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"  ng-model="email"  />
+          <span class="error" ng-show="myForm.email.$error.required">Required!</span>
+          <span style="color:Red" ng-show="myForm.email.$dirty && myForm.email.$error.pattern">Please Enter Valid Email</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="lnumber">Phone Number</label>
+        </div>
+        <div class="col-75">
+          <input name="phoneno" type= "number" ng-model="myphone" placeholder="Your Phone Num.." required/>
+          <span style="color:red" ng-show="myForm.phoneno.$dirty && myForm.phoneno.$invalid">The phone number is required.</span>
+          <span ng-show="myphone.toString().length<10"  style="color:red" >Minimum 10 numbers allowed</span>
+          <span ng-show="myphone.toString().length>10"  style="color:red" >Maximum 10 numbers allowed</span>
+        </div>
+      </div>
+      <div class="row">
+          <div style="text-align: right;">
+              <button type="submit" ng-disabled="!myName || !myphone || !myEmail" >Add</button>
+            </div>
+            <div style="text-align: right;" >
+              TotalUsers:  {{countnum}} 
+            </div>
+      </div>
+   
+    </form>
+  </div>
+<br></br>
+
+    
+
+  <div>
+       
+      <table>
+          <thead style="background: black; color:white;">
+              <tr>
+                <td  style="padding:20px; width:10%">Name</td>
+                <td  style="padding:20px; width:10%">Email</td>
+                <td  style="padding:20px; width:10%">Number</td>
+               
+                <td  style="padding:20px; width:10%">Action</td>
+              </tr>
+            </thead>
+            
+            <p>Search <input type="text" ng-model="searchstr"></p>
+              <tr ng-repeat="student in Students |  filter:searchstr">
+                <td>{{ student.name }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.number }}</td>
+             
+                <td  style="padding:20px;"><button ng-click="removeEntry($index)">X</button></td>
+              </tr>
+          
+
+
+           
+      </table>
+      
+    </div>
+    
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
